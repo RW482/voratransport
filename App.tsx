@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
@@ -10,11 +9,11 @@ import {
   BookOpen,
   ReceiptIndianRupee
 } from 'lucide-react';
-import { Truck, LogisticsOrder, TripStatus, HiredInvoice } from './types';
-import Dashboard from './components/Dashboard';
-import FleetManager from './components/FleetManager';
-import OrderManager from './components/OrderManager';
-import BillingManager from './components/BillingManager';
+import { Truck, LogisticsOrder, TripStatus, HiredInvoice } from './types.ts';
+import Dashboard from './components/Dashboard.tsx';
+import FleetManager from './components/FleetManager.tsx';
+import OrderManager from './components/OrderManager.tsx';
+import BillingManager from './components/BillingManager.tsx';
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
@@ -106,7 +105,6 @@ const App: React.FC = () => {
   return (
     <HashRouter>
       <div className="flex min-h-screen bg-slate-50 overflow-x-hidden">
-        {/* Mobile Sidebar Toggle Button */}
         {!isSidebarOpen && (
           <button 
             onClick={toggleSidebar}
@@ -116,11 +114,9 @@ const App: React.FC = () => {
           </button>
         )}
 
-        {/* Sidebar */}
         <aside 
           className={`fixed inset-y-0 left-0 z-40 bg-slate-950 text-white transition-all duration-300 ease-in-out transform shadow-2xl ${isSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full lg:translate-x-0 lg:w-20'}`}
         >
-          {/* Slide Arrow Handle (Floating toggle) */}
           <button 
             onClick={toggleSidebar}
             className="absolute -right-4 top-1/2 -translate-y-1/2 z-50 bg-indigo-600 text-white p-1 rounded-full border-4 border-slate-50 shadow-xl hover:scale-110 transition-transform hidden lg:block"
@@ -131,12 +127,10 @@ const App: React.FC = () => {
           <div className="flex flex-col h-full border-r border-slate-800">
             <div className={`p-6 border-b border-slate-800 flex items-center h-20 ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
               {isSidebarOpen ? (
-                <>
-                  <div className="flex items-center gap-3">
-                    <div className="bg-indigo-600 p-2 rounded-lg shadow-inner"><TruckIcon size={20} /></div>
-                    <h1 className="text-lg font-black tracking-tight uppercase">Logi<span className="text-indigo-500">Track</span></h1>
-                  </div>
-                </>
+                <div className="flex items-center gap-3">
+                  <div className="bg-indigo-600 p-2 rounded-lg shadow-inner"><TruckIcon size={20} /></div>
+                  <h1 className="text-lg font-black tracking-tight uppercase">Logi<span className="text-indigo-500">Track</span></h1>
+                </div>
               ) : (
                 <div className="bg-indigo-600 p-2 rounded-lg"><TruckIcon size={20} /></div>
               )}
@@ -163,7 +157,6 @@ const App: React.FC = () => {
           </div>
         </aside>
 
-        {/* Main Content Area */}
         <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'} min-h-screen pt-20 lg:pt-0`}>
           <div className="p-4 md:p-8 lg:p-10 max-w-7xl mx-auto">
             <Routes>

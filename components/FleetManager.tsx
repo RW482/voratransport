@@ -1,12 +1,11 @@
-
 import React, { useState, useMemo } from 'react';
-import { Truck, TripStatus, HiredInvoice, RouteType } from '../types';
+import { Truck, TripStatus, HiredInvoice, RouteType } from '../types.ts';
 import { 
   MapPin, User, Phone, Weight, Wallet, 
   ArrowRight, Plus, CheckCircle2,
   Truck as TruckIcon, Download, Share2,
   Filter, Trash2, ArrowRightLeft, CreditCard,
-  ReceiptIndianRupee
+  ReceiptIndianRupee, Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -75,8 +74,20 @@ const FleetManager: React.FC<FleetManagerProps> = ({ trucks, updateStatus, addNe
   };
 
   const shareToWhatsApp = (truck: Truck) => {
-    const text = `*VORA TRANSPORT DISPATCH DETAILS*%0A---------------------------%0A*Vehicle:* ${truck.numberPlate}%0A*Route:* ${truck.fromStation} to ${truck.toStation}%0A*Driver:* ${truck.driverName} (${truck.driverMobile})%0A*Weight:* ${truck.loadedWeight}%0A*Status:* ${truck.status}%0A---------------------------%0A_Generated via LogiTrack Pro_`;
-    window.open(`https://wa.me/?text=${text}`, '_blank');
+    const header = `🚛 *VORA TRANSPORT CO. DISPATCH*`;
+    const details = `
+*Date:* ${new Date(truck.dispatchDate).toLocaleDateString()}
+*Vehicle:* ${truck.numberPlate}
+*Route:* ${truck.fromStation} to ${truck.toStation}
+*Type:* ${truck.isHired ? `Hired (${truck.lorryOwnerName})` : 'Company Own'}
+*Driver:* ${truck.driverName} (${truck.driverMobile})
+*Weight:* ${truck.loadedWeight || 'Not specified'}
+*Status:* ${truck.status.replace('_', ' ')}
+    `.trim();
+    const footer = `_Generated via LogiTrack Pro_`;
+    
+    const message = encodeURIComponent(`${header}\n---------------------------\n${details}\n---------------------------\n${footer}`);
+    window.open(`https://wa.me/?text=${message}`, '_blank');
   };
 
   const filteredTrucks = useMemo(() => {
@@ -223,13 +234,22 @@ const RouteSection = ({ title, trucks, invoices, onAdd, onExport, updateStatus, 
               <div className="flex justify-between items-start mb-4 md:mb-6">
                 <div className="flex items-center gap-3">
                   <div className="bg-slate-900 p-2 rounded-xl text-white"><TruckIcon size={20} /></div>
-                  <div>
-                    <h4 className="text-lg md:text-xl font-black text-slate-900 leading-tight uppercase">{truck.numberPlate}</h4>
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-lg md:text-xl font-black text-slate-900 leading-tight uppercase">{truck.numberPlate}</h4>
+                      <button 
+                        onClick={() => shareToWhatsApp(truck)} 
+                        className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all flex items-center gap-1"
+                        title="Share to WhatsApp"
+                      >
+                        <Share2 size={16}/>
+                        <span className="text-[8px] font-black uppercase tracking-tighter hidden sm:inline">Share</span>
+                      </button>
+                    </div>
                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{truck.isHired ? `Hired: ${truck.lorryOwnerName}` : 'Company'}</p>
                   </div>
                 </div>
-                <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-all">
-                  <button onClick={() => shareToWhatsApp(truck)} className="p-2 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all" title="Share to WhatsApp"><Share2 size={18}/></button>
+                <div className="flex gap-1 transition-all">
                   <button onClick={() => deleteTruck(truck.id)} className="p-2 text-slate-200 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all"><Trash2 size={18}/></button>
                 </div>
               </div>
@@ -242,7 +262,7 @@ const RouteSection = ({ title, trucks, invoices, onAdd, onExport, updateStatus, 
               </div>
 
               {truck.isHired && (
-                <div className={`mb-4 md:mb-6 p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 ${isPaidInBilling ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-100 animate-pulse'}`}>
+                <div className={`mb-4 md:mb-6 p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 ${isPaidInBilling ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-100'}`}>
                   <div>
                     <p className={`text-[9px] font-black uppercase tracking-widest ${isPaidInBilling ? 'text-emerald-500' : 'text-rose-400'}`}>
                       {isPaidInBilling ? 'Balance Settled' : 'Pending Payment'}
@@ -266,7 +286,9 @@ const RouteSection = ({ title, trucks, invoices, onAdd, onExport, updateStatus, 
                   >
                     {Object.values(TripStatus).map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
-                  <p className="text-[9px] font-black text-slate-300 uppercase italic text-center sm:text-right">Update: {new Date(truck.lastUpdated).toLocaleTimeString()}</p>
+                  <p className="text-[9px] font-black text-slate-300 uppercase italic text-center sm:text-right flex items-center justify-center gap-1">
+                    <Calendar size={10} /> {new Date(truck.dispatchDate).toLocaleDateString()} | {new Date(truck.lastUpdated).toLocaleTimeString()}
+                  </p>
               </div>
             </div>
           );

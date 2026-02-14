@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo } from 'react';
-import { LogisticsOrder } from '../types';
+import { LogisticsOrder } from '../types.ts';
 import { 
   Plus, User, Building, Phone, 
   MapPin, Clipboard, Search, CheckCircle2, XCircle, 

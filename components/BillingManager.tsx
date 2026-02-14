@@ -1,6 +1,5 @@
-
 import React, { useState, useMemo, useRef } from 'react';
-import { HiredInvoice } from '../types';
+import { HiredInvoice } from '../types.ts';
 import { 
   Plus, ReceiptIndianRupee, User, Truck as TruckIcon, 
   MapPin, Wallet, CreditCard, CheckCircle2, 

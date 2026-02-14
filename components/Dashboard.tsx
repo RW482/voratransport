@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -6,8 +5,8 @@ import {
   AreaChart, Area, XAxis, YAxis
 } from 'recharts';
 import { BrainCircuit, Loader2, TrendingUp, Wallet, CreditCard, ShoppingBag, Truck as TruckIcon } from 'lucide-react';
-import { Truck, LogisticsOrder, HiredInvoice } from '../types';
-import { getLogisticsInsights } from '../services/geminiService';
+import { Truck, LogisticsOrder, HiredInvoice } from '../types.ts';
+import { getLogisticsInsights } from '../services/geminiService.ts';
 
 interface DashboardProps {
   trucks: Truck[];
@@ -19,12 +18,10 @@ const Dashboard: React.FC<DashboardProps> = ({ trucks, orders, invoices }) => {
   const [aiInsight, setAiInsight] = useState<string>('');
   const [loadingAi, setLoadingAi] = useState<boolean>(true);
 
-  // Advanced financial logic
   const hiredTrucks = trucks.filter(t => t.isHired);
   const totalAdvanceGiven = hiredTrucks.reduce((acc, t) => acc + (t.advancePaid || 0), 0);
   
   const totalBalanceDue = hiredTrucks.reduce((acc, t) => {
-    // Check if there's a paid invoice for this vehicle plate
     const invoiceRecord = invoices.find(inv => inv.vehicleNo.toLowerCase() === t.numberPlate.toLowerCase());
     if (invoiceRecord?.isPaid) return acc;
     return acc + ((t.hiredFreightAmount || 0) - (t.advancePaid || 0));
@@ -56,7 +53,6 @@ const Dashboard: React.FC<DashboardProps> = ({ trucks, orders, invoices }) => {
         </div>
       </header>
 
-      {/* KPI Stats - Scrollable on mobile */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <KPICard title="Total Trips" value={trucks.length.toString()} color="indigo" icon={<TrendingUp size={24} />} />
         <KPICard title="Pending Bookings" value={pendingOrdersCount.toString()} color="orange" icon={<ShoppingBag size={24} />} />
