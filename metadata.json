@@ -1,0 +1,7 @@
+{
+  "name": "LogiTrack Pro - VORA TRANSPORT CO.",
+  "description": "A comprehensive logistics management system for transporters operating the Mumbai-Kolhapur corridor, featuring fleet tracking, load management, and branch order coordination.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
