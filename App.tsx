@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { MemoryRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Truck as TruckIcon, 
@@ -104,7 +104,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <MemoryRouter>
+    <HashRouter>
       <div className="flex min-h-screen bg-slate-50 overflow-x-hidden">
         {/* Mobile Sidebar Toggle Button */}
         {!isSidebarOpen && (
@@ -136,9 +136,6 @@ const App: React.FC = () => {
                     <div className="bg-indigo-600 p-2 rounded-lg shadow-inner"><TruckIcon size={20} /></div>
                     <h1 className="text-lg font-black tracking-tight uppercase">Logi<span className="text-indigo-500">Track</span></h1>
                   </div>
-                  <button onClick={toggleSidebar} className="p-1 hover:bg-slate-800 rounded-md text-slate-500 lg:hidden">
-                    <X size={20} />
-                  </button>
                 </>
               ) : (
                 <div className="bg-indigo-600 p-2 rounded-lg"><TruckIcon size={20} /></div>
@@ -178,13 +175,9 @@ const App: React.FC = () => {
           </div>
         </main>
       </div>
-    </MemoryRouter>
+    </HashRouter>
   );
 };
-
-const X: React.FC<{ size: number }> = ({ size }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-);
 
 const SidebarItem: React.FC<{ to: string, icon: React.ReactNode, label: string, isOpen: boolean }> = ({ to, icon, label, isOpen }) => {
   const location = useLocation();
